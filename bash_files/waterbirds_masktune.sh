@@ -1,10 +1,11 @@
 #!/bin/bash
-cd path/to/the/cloned/folder
+cd /home/user01/masktune/Masktune
 
+
+#  --train
 python3 -m src.main --dataset waterbirds \
-                    --train \
                     --arch resnet50 \
-                    --base_dir path/to/the/cloned/folder \
+                    --base_dir /home/user01/masktune/Masktune \
                     --lr 0.0001 \
                     --use_cuda \
                     --optimizer sgd \
@@ -13,4 +14,6 @@ python3 -m src.main --dataset waterbirds \
                     --masking_batch 128 \
                     --epochs 100 \
                     --masktune \
-                    --dataset_dir path/to/the/cloned/folder/ + datasets/Waterbirds/raw
+                    --dataset_dir /home/user01/hosseini/waterbird_complete95_forest2water2 \
+                    --best_erm_model_checkpoint_path /home/user01/models/waterbirds/100resnet50_erm_ll.model      
+

@@ -42,10 +42,17 @@ def main(args):
             method.train_erm()
             method.test(method.best_erm_model_checkpoint_path)
     else:
-        if args.selective_classification:
-            method.test_selective_classification(erm_model_checkpoint_path=args.best_erm_model_checkpoint_path, finetuned_model_checkpoint_path=args.finetuned_model_checkpoint_path)
+        if args.masktune:
+            method.masktune()
+            if args.selective_classification:
+                method.test_selective_classification(erm_model_checkpoint_path=args.best_erm_model_checkpoint_path, finetuned_model_checkpoint_path=args.finetuned_model_checkpoint_path)
+            else:
+                method.test(method.finetuned_model_checkpoint_path)
         else:
-            method.test(args.best_erm_model_checkpoint_path)
+            if args.selective_classification:
+                method.test_selective_classification(erm_model_checkpoint_path=args.best_erm_model_checkpoint_path, finetuned_model_checkpoint_path=args.finetuned_model_checkpoint_path)
+            else:
+                method.test(args.best_erm_model_checkpoint_path)
 
 
 if __name__ == "__main__":
