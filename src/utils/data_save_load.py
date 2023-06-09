@@ -56,25 +56,25 @@ def load_checkpoint(model, optimizer, lr_scheduler, checkpoint_path: str):
         else:
             model_dict = model.state_dict()
         model_keys = list(model_dict.keys())
-        # for key in list(state['model'].keys()):
-        #     if i < len(model_keys) and model_keys[i] in key:
-        #         model_dict[model_keys[i]] = state['model'][key]
-        #         i += 1
-        for key in list(state.keys()):
+        state_temp = state
+        if 'model' in state.keys():
+            state_temp = state['model']
+        for key in list(state_temp.keys()):
             if i < len(model_keys) and model_keys[i] in key:
-                model_dict[model_keys[i]] = state[key]
+                model_dict[model_keys[i]] = state_temp[key]
                 i += 1
         if isinstance(model, nn.DataParallel):
             model.module.load_state_dict(model_dict)
         else:
             model.load_state_dict(model_dict)
         
-        # if optimizer is not None:
-        #     optimizer.load_state_dict(state["optimizer"])
-        # if lr_scheduler is not None:
-        #     lr_scheduler.load_state_dict(state["scheduler"])
-        # current_epoch = state["epoch"] + 1
-        current_epoch = 100
+        if optimizer is not None and 'optimizer' in state.keys():
+            optimizer.load_state_dict(state["optimizer"])
+        if lr_scheduler is not None and 'scheduler' in state.keys():
+            lr_scheduler.load_state_dict(state["scheduler"])
+        current_epoch = 0
+        if 'epoch' in state.keys():
+            current_epoch = state["epoch"] + 1
         # accuracy = state["accuracy"]
         accuracy = 0
         del state

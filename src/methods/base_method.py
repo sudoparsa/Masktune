@@ -95,9 +95,6 @@ class TrainBaseMethod(ABC):
         self.masked_data_save_dir = masked_data_save_dir
         self.best_erm_model_checkpoint_path = os.path.join(self.model_save_dir, "best_erm_model_checkpoint.pt")
         self.last_erm_model_checkpoint_path = os.path.join(self.model_save_dir, "last_erm_model_checkpoint.pt")
-        # Changed for loading pretrained ERM
-        self.best_erm_model_checkpoint_path = '/home/user01/models/waterbirds/100resnet50_erm_ll.model'
-        self.last_erm_model_checkpoint_path = '/home/user01/models/waterbirds/100resnet50_erm_ll.model'
         self.finetuned_model_checkpoint_path = os.path.join(self.model_save_dir, "finetuned_model.pt")
         self.device = select_device(self.args.use_cuda)
         self.loss_function = nn.CrossEntropyLoss()
@@ -243,7 +240,7 @@ class TrainBaseMethod(ABC):
             self.run_id,
         )
 
-    def train_erm(self, use_lr_scheduler: bool=False, best_resume_checkpoint_path: str=None, last_resume_checkpoint_path: str=None) -> None:
+    def train_erm(self, use_lr_scheduler: bool=True, best_resume_checkpoint_path: str=None, last_resume_checkpoint_path: str=None) -> None:
         resume_epoch = 0
         best_accuracy = -math.inf
         if best_resume_checkpoint_path is not None and last_resume_checkpoint_path is not None:
@@ -402,14 +399,11 @@ class TrainBaseMethod(ABC):
         if masked_data_is_ready:
             self.test(checkpoint_path=self.best_erm_model_checkpoint_path)
         else:
+            # Comment the below line if you have trained your ERM
+            self.train_erm(best_resume_checkpoint_path=self.args.best_erm_model_checkpoint_path, last_resume_checkpoint_path=self.args.last_erm_model_checkpoint_path)
             self.test(checkpoint_path=self.best_erm_model_checkpoint_path)
             if not self.args.use_random_masking:
                 self.mask_data(erm_checkpoint_path=self.best_erm_model_checkpoint_path)
-        # else:
-        #     self.train_erm(best_resume_checkpoint_path=self.args.best_erm_model_checkpoint_path, last_resume_checkpoint_path=self.args.last_erm_model_checkpoint_path)
-        #     self.test(checkpoint_path=self.best_erm_model_checkpoint_path)
-        #     if not self.args.use_random_masking:
-        #         self.mask_data(erm_checkpoint_path=self.best_erm_model_checkpoint_path)
 
         if not self.args.use_random_masking:
             self.train_dataset, self.train_loader = update_dataset_and_dataloader(

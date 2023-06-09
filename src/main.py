@@ -43,6 +43,9 @@ def main(args):
             method.test(method.best_erm_model_checkpoint_path)
     else:
         if args.masktune:
+            # Changed for loading pretrained ERM
+            method.best_erm_model_checkpoint_path = '/home/user01/models/waterbirds/100resnet50_erm_ll.model'
+            method.last_erm_model_checkpoint_path = '/home/user01/models/waterbirds/100resnet50_erm_ll.model'
             method.masktune()
             if args.selective_classification:
                 method.test_selective_classification(erm_model_checkpoint_path=args.best_erm_model_checkpoint_path, finetuned_model_checkpoint_path=args.finetuned_model_checkpoint_path)
