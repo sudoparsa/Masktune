@@ -400,7 +400,7 @@ class TrainBaseMethod(ABC):
             self.test(checkpoint_path=self.best_erm_model_checkpoint_path)
         else:
             # Comment the below line if you have trained your ERM
-            self.train_erm(best_resume_checkpoint_path=self.args.best_erm_model_checkpoint_path, last_resume_checkpoint_path=self.args.last_erm_model_checkpoint_path)
+            # self.train_erm(best_resume_checkpoint_path=self.args.best_erm_model_checkpoint_path, last_resume_checkpoint_path=self.args.last_erm_model_checkpoint_path)
             self.test(checkpoint_path=self.best_erm_model_checkpoint_path)
             if not self.args.use_random_masking:
                 self.mask_data(erm_checkpoint_path=self.best_erm_model_checkpoint_path)
