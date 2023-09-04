@@ -70,7 +70,7 @@ class CelebADataset(Dataset):
                         img_data_dir, str(label), image_id))
                     self.labels.append(label)
                     self.confounders[image_id] = confounder
-            if split == 'train':
+            if balance and split == 'train':
                 self.labels = pd.DataFrame(self.labels).squeeze()
                 self.data_path = pd.DataFrame(self.data_path).squeeze()
                 label0 = self.labels.index[self.labels == 0].tolist()
