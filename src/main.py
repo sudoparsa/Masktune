@@ -50,8 +50,8 @@ def main(args):
             # method.last_erm_model_checkpoint_path = '/home/user01/models/waterbirds/100resnet50_erm_ll.model'
             
             # CelebA
-            method.best_erm_model_checkpoint_path = '/home/user01/models/resnet50_celeba.model'
-            method.last_erm_model_checkpoint_path = '/home/user01/models/resnet50_celeba.model'
+            method.best_erm_model_checkpoint_path = '/content/drive/MyDrive/Meta_ood/image_rationalization/resnet50_celeba.model'
+            method.last_erm_model_checkpoint_path = '/content/drive/MyDrive/Meta_ood/image_rationalization/resnet50_celeba.model'
             
             method.masktune()
             if args.selective_classification:
