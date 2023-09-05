@@ -28,7 +28,7 @@ class CelebADataset(Dataset):
             attr_name='Blond_Hair',
             confounder_names="Male",
             return_confounder=False,
-            balance=False,
+            balance=True,
     ) -> None:
         self.split = split
         self.transform = transform
@@ -75,6 +75,7 @@ class CelebADataset(Dataset):
                 self.data_path = pd.DataFrame(self.data_path).squeeze()
                 label0 = self.labels.index[self.labels == 0].tolist()
                 label1 = self.labels.index[self.labels == 1].tolist()
+                print(len(label0), len(label1))
                 l = min(len(label0), len(label1))
                 label0 = [label0[i] for i in random.sample(range(len(label0)), l)]
                 label1 = [label1[i] for i in random.sample(range(len(label1)), l)]
@@ -83,7 +84,8 @@ class CelebADataset(Dataset):
                 self.data_path = list(self.data_path.iloc[label0+label1])
 
             print(
-                f"\n\nfinished creating and saving {split} dataset of CelebA\n\n")
+                f"\n\nfinished creating and saving {split} dataset of CelebA")
+            print(f'Size: {len(self.labels), len(self.data_path)}\n\n')
             return
         attrs_df = pd.read_csv(os.path.join(
             raw_data_path, 'list_attr_celeba.csv'))
