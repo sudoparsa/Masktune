@@ -57,7 +57,7 @@ class WaterbirdsDataset(Dataset):
                         self.data_path.append(os.path.join(
                             img_data_dir, y, img_filename.split('/')[-1]))
                         self.targets.append(int(y))
-                        self.places[img_filename.split('/')[-1]] = place
+                        self.places[img_filename.split('/')[-1]] = int(place)
             print(
                 f"\n\nfinished creating {split} dataset of Waterbirds\n\n")
             return
